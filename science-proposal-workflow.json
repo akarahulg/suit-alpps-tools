@@ -1,0 +1,258 @@
+[
+{
+    "action": "click",
+    "full_xpath": "/html[1]/body[1]/div[2]/div[1]/div[2]/form[1]/div[1]/div[2]/div[1]/a[1]",
+    "id": "j_idt35:login-link",
+    "text": "Login",
+    "value": "",
+    "xpath": "//*[@id=\"j_idt35:login-link\"]"
+}
+,
+
+{
+    "action": "input",
+    "full_xpath": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[1]/input[1]",
+    "id": "username",
+    "text": "None",
+    "value": "${ALPPS_USERNAME}",
+    "xpath": "//*[@id=\"username\"]"
+}
+,
+{
+    "action": "input",
+    "full_xpath": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[2]/input[1]",
+    "id": "password",
+    "text": "None",
+    "value": "${ALPPS_PASSWORD}",
+    "xpath": "//*[@id=\"password\"]"
+},
+{
+    "action": "click",
+    "full_xpath": "/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/form[1]/div[4]/input[2]",
+    "id": "kc-login",
+    "text": "None",
+    "xpath": "//*[@id=\"kc-login\"]"
+},
+
+{
+    "action": "click",
+    "xpath": "//a[@id='j_idt35:menu-proposals']/span[@class='ui-menuitem-text']",
+    "text": "Proposals",
+    "value": ""
+},
+
+{
+    "action": "click",
+    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:proposal-type']/span[@class='ui-button-text ui-c']",
+    "text": "Regular",
+    "value": ""
+}
+,
+{
+    "action": "click",
+    "xpath": "//button[@id='proposal-main-content:create-science-proposal-form:create-wizard_next']/span[@class='ui-button-text ui-c']",
+    "text": "Next",
+    "value": ""
+},
+{
+    "action": "input",
+    "id": "password",
+    "text": "Title",
+    "value": "${TITLE}",
+    "xpath": "//textarea[@id='proposal-main-content:create-science-proposal-form:title']"
+},
+{
+    "action": "input",
+    "id": "None",
+    "text": "None",
+    "value": "${JUSTIFICATION}",
+    "xpath": "//textarea[@id='proposal-main-content:create-science-proposal-form:justification']"
+},
+
+{
+    "action": "click",
+    "id": "None",
+    "text": "Next",
+    "xpath": "//button[@id='proposal-main-content:create-science-proposal-form:create-wizard_next']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+    "id": "None",
+    "text": "SUIT",
+    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:j_idt311:remote-sensing-instruments']/div[@class='ui-g'][1]/div[@class='ui-g-12 ui-md-12']/label"
+},
+{
+    "action": "click",
+    "id": "None",
+    "text": "Proceed",
+    "xpath": "//button[@id='proposal-main-content:create-science-proposal-form:j_idt311:instrument-selection-proceed-button']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "select",
+    "id": "None",
+    "option": "${PS_MODE}",
+    "xpath": "//label[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:obs_mode_label']"
+},
+{
+    "action": "click",
+    "id": "None",
+	"text": "Add",
+    "xpath": "//button[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-add']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+    "id": "None",
+	"text": "Rows",
+    "xpath": "//*[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:j_id165']/option[3]"
+},
+
+{
+	"repeat": "${REPEAT_CLICK}",
+	"steps": [
+			{
+    	"action": "click",
+    	"id": "None",
+		"text": "Add",
+    	"xpath": "//button[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-add']/span[@class='ui-button-text ui-c']"
+}
+	]
+
+},
+
+{ "indexrepeat": "${REPEAT_ENTRY}",
+	"steps": [
+	{
+	    "action": "click",
+	    "id": "None",
+		"text": "Edit",
+	    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt990']/a[@class='ui-row-editor-pencil']/span[@class='ui-icon ui-icon-pencil']"
+	},
+	{
+	    "action": "input",
+		"value": "${ROI_SIZE}",
+	    "xpath": "//input[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt974_input']"
+	},
+	{
+	    "action": "input",
+		"value": "${ROI_SIZE}",
+	    "xpath": "//input[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt978_input']"
+	},
+	{
+	    "action": "input",
+		"value": "${ROI_DURATON}",
+	    "xpath": "//input[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt982_input']"
+	},
+	{
+	    "action": "select",
+		"id": "None",
+		"option": "${ROI_UNIT}",
+	    "xpath": "//label[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:duration-unit_label']"
+	},
+	{
+	    "action": "input",
+		"value": "Active Regions",
+	    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt987']/input[@class='ui-selectonemenu-label ui-inputfield ui-corner-all']"
+	},
+	{
+	    "action": "click",
+		"text": "None",
+	    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:roi-table:{index}:j_idt990']/a[@class='ui-row-editor-check']/span[@class='ui-icon ui-icon-check ui-c']"
+	}
+	]
+	},
+{
+    "action": "click",
+	"text": "No",
+    "xpath": "//div[@id='proposal-main-content:create-science-proposal-form:instrument-tabs-form:instrument-config-tab-view:track-roi']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+	"text": "Next",
+    "xpath": "//button[@id='proposal-main-content:create-science-proposal-form:create-wizard_next']/span[@class='ui-button-text ui-c']"
+},
+
+{
+    "action": "input",
+	"value": "${TOTAL_DURATION}",
+    "xpath":"//input[@id='proposal-main-content:create-science-proposal-form:duration_input']"
+},
+{
+    "action": "select",
+	"option": "${TOTAL_UNIT}",
+    "xpath":"//*[@id='proposal-main-content:create-science-proposal-form:duration-unit']"
+},
+{
+    "action": "click",
+	"text": "Align duration",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:align-duration-button']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+	"text": "Yes",
+    "xpath":"//div[@id='proposal-main-content:create-science-proposal-form:splitFlag']/span[@class='ui-button-text ui-c']"
+},
+
+{
+    "action": "input",
+	"value": "${SPLIT}",
+    "xpath":"//input[@id='proposal-main-content:create-science-proposal-form:split-size_input']"
+},
+
+{
+    "action": "input",
+	"value": "${TIME_JUSTIFICATION}",
+    "xpath":"//textarea[@id='proposal-main-content:create-science-proposal-form:specific-remarks']"
+},
+{
+    "action": "click",
+	"text": "Next",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:create-wizard_next']/span[@class='ui-button-text ui-c']"
+},
+
+{
+  "action": "upload",
+  "file": "${JUST_FILE}",
+  "xpath": "//input[@type='file' and contains(@id,'attachment-upload')]"
+},
+
+{
+    "action": "click",
+	"text": "Next",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:create-wizard_next']/span[@class='ui-button-text ui-c']"
+},
+
+{
+    "action": "click",
+	"text": "Validate",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:j_idt1319']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+	"text": "Submit Proposal",
+	"confirm": true,
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:submit-proposal-button']/span[@class='ui-button-text ui-c']"
+},
+
+{
+    "action": "click",
+	"text": "Yes",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:j_idt1338']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+	"text": "OK",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:j_idt1342']/span[@class='ui-button-text ui-c']"
+},
+{
+    "action": "click",
+	"text": "Sign out",
+    "xpath":"//button[@id='j_idt35:logout-button']/span[@class='ui-button-icon-left ui-icon ui-c pi pi-sign-out']"
+},
+{
+    "action": "click",
+	"text": "Yes",
+    "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:j_idt1338']/span[@class='ui-button-text ui-c']"
+}
+
+]
+

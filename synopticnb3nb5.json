@@ -1,0 +1,15 @@
+{
+	"PS_MODE": "SynopticFlareNB3NB5",
+	"TITLE": "SUIT science proposal for March by Rahul G on behalf of SUITPOC",
+	"JUSTIFICATION": "SUIT science proposal for March by Rahul G on behalf of SUITPOC PS: SynopticFlareNB3NB5. Every Monday to Friday 03:23 UT to 23:52 UT, Duration:  1229 Minutes",
+	"TOTAL_DURATION": "1229",
+	"TOTAL_UNIT": "Minutes",
+	"ROI_UNIT": "Minutes",
+	"ROI_SIZE": "560",
+	"ROI_DURATON": "120",
+	"SPLIT": "1",
+	"TIME_JUSTIFICATION": " Every Monday to Friday 03:23 UT to 23:52 UT, Duration:  1229 Minutes",
+	"REPEAT_CLICK": 8,
+	"REPEAT_ENTRY": 9,
+	"JUST_FILE": "/home/rahul/Documents/dummy.pdf"
+}
