@@ -229,7 +229,6 @@
 {
     "action": "click",
 	"text": "Submit Proposal",
-	"confirm": true,
     "xpath":"//button[@id='proposal-main-content:create-science-proposal-form:submit-proposal-button']/span[@class='ui-button-text ui-c']"
 },
 

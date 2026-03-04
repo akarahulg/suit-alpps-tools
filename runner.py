@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from dotenv import load_dotenv
+import argparse
 
 load_dotenv()
 
@@ -17,9 +18,7 @@ load_dotenv()
 class PriorityRunner:
 
     def __init__(self):
-        self.driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install())
-        )
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 20)
         self.runtime_data = {}
@@ -28,36 +27,27 @@ class PriorityRunner:
     # Wait for page ready
     # -------------------------
     def wait_ready(self):
-        self.wait.until(
-            lambda d: d.execute_script("return document.readyState") == "complete"
-        )
+        self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
         time.sleep(1)
 
     # -------------------------
-    # Resolve variables from .env or data.json
+    # Variable Resolver
     # -------------------------
     def resolve_variables(self, value):
         if not isinstance(value, str):
             return value
-
         if value.startswith("${") and value.endswith("}"):
             key = value[2:-1]
-
-            # 1️⃣ Check runtime data
             if key in self.runtime_data:
                 return str(self.runtime_data[key])
-
-            # 2️⃣ Check .env
             env_value = os.getenv(key)
             if env_value is not None:
                 return env_value
-
             raise Exception(f"❌ Variable '{key}' not found in data.json or .env")
-
         return value
 
     # -------------------------
-    # Resolve step fields
+    # Resolve variables inside step
     # -------------------------
     def resolve_step_variables(self, step):
         for field in ["value", "option", "file", "xpath", "id", "text"]:
@@ -70,9 +60,7 @@ class PriorityRunner:
     # -------------------------
     def find_by_xpath(self, xpath):
         try:
-            return self.wait.until(
-                EC.element_to_be_clickable((By.XPATH, xpath))
-            )
+            return self.wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
         except:
             return None
 
@@ -83,13 +71,9 @@ class PriorityRunner:
             if ":" in element_id:
                 stable = element_id.split(":")[-1]
                 xpath = f"//*[contains(@id, ':{stable}')]"
-                return self.wait.until(
-                    EC.element_to_be_clickable((By.XPATH, xpath))
-                )
+                return self.wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
             else:
-                return self.wait.until(
-                    EC.element_to_be_clickable((By.ID, element_id))
-                )
+                return self.wait.until(EC.element_to_be_clickable((By.ID, element_id)))
         except:
             return None
 
@@ -97,11 +81,8 @@ class PriorityRunner:
         if text == "None":
             return None
         lowered = text.lower()
-        elements = self.wait.until(
-            EC.presence_of_all_elements_located(
-                (By.XPATH, "//a | //button | //*[@role='button'] | //span")
-            )
-        )
+        elements = self.wait.until(EC.presence_of_all_elements_located(
+            (By.XPATH, "//a | //button | //*[@role='button'] | //span")))
         for el in elements:
             try:
                 if lowered in el.text.strip().lower() and el.is_displayed():
@@ -137,9 +118,7 @@ class PriorityRunner:
     def select_dropdown(self, element, option_text):
         self.safe_click(element)
         time.sleep(0.5)
-        options = self.wait.until(
-            EC.presence_of_all_elements_located((By.XPATH, "//li"))
-        )
+        options = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "//li")))
         lowered = option_text.lower()
         for opt in options:
             try:
@@ -156,9 +135,7 @@ class PriorityRunner:
         file_path = self.resolve_variables(file_path)
         print("🔎 Attempting upload...")
         try:
-            self.wait.until(
-                lambda d: len(d.find_elements(By.XPATH, "//input[@type='file']")) > 0
-            )
+            self.wait.until(lambda d: len(d.find_elements(By.XPATH, "//input[@type='file']")) > 0)
             file_input = self.driver.find_element(By.XPATH, "//input[@type='file']")
             self.driver.execute_script("""
                 arguments[0].style.display='block';
@@ -167,17 +144,14 @@ class PriorityRunner:
             """, file_input)
             file_input.send_keys(file_path)
             print("  ✅ File path sent")
-            self.wait.until(
-                lambda d: len(d.find_elements(
-                    By.XPATH, "//button[contains(@id,'attachment-remove-button')]"
-                )) > 0
-            )
+            self.wait.until(lambda d: len(d.find_elements(
+                By.XPATH, "//button[contains(@id,'attachment-remove-button')]")) > 0)
             print("  ✅ Upload confirmed")
         except Exception as e:
             print("  ❌ Upload failed:", e)
 
     # -------------------------
-    # User confirmation
+    # Confirmation
     # -------------------------
     def confirm_step(self, step):
         print("\n-----------------------------------")
@@ -188,22 +162,18 @@ class PriorityRunner:
         return user_input in ["y", "yes"]
 
     # -------------------------
-    # Process a step
+    # Process single step
     # -------------------------
     def process_step(self, step):
         step = self.resolve_step_variables(step)
-
         if step.get("confirm", False):
             if not self.confirm_step(step):
                 print("⛔ Step skipped.")
                 return
-
         action = step.get("action")
-
         if action == "upload":
             self.upload_file(step["file"])
             return
-
         element = None
         if step.get("xpath"):
             element = self.find_by_xpath(step["xpath"])
@@ -211,11 +181,9 @@ class PriorityRunner:
             element = self.find_by_id(step["id"])
         if not element and step.get("text"):
             element = self.find_by_text(step["text"])
-
         if not element:
             print("  ❌ Element not found.")
             return
-
         if action == "click":
             self.safe_click(element)
         elif action == "input":
@@ -224,55 +192,51 @@ class PriorityRunner:
             self.select_dropdown(element, step["option"])
 
     # -------------------------
-    # Execute workflow
+    # Execute Workflow
     # -------------------------
     def execute(self, workflow_file, data_file=None):
-
         with open(workflow_file, "r") as f:
             workflow = json.load(f)
-
         if data_file:
             with open(data_file, "r") as f:
                 self.runtime_data = json.load(f)
-
         self.driver.get("https://alpps.issdc.gov.in")
         self.wait_ready()
-
         iframes = self.driver.find_elements(By.TAG_NAME, "iframe")
         if iframes:
             self.driver.switch_to.frame(iframes[0])
 
         for step in workflow:
 
-            # -------------------------
-            # Simple repeat (no index)
-            # -------------------------
+            # Normal repeat (no index)
             if "repeat" in step and "steps" in step:
                 repeat_count = int(self.resolve_variables(step["repeat"]))
-                print(f"\n🔁 Repeating block {repeat_count} times (no index)")
-                for _ in range(repeat_count):
+                print(f"\n🔁 Repeating block {repeat_count} times")
+                for i in range(repeat_count):
                     for sub_step in step["steps"]:
-                        self.process_step(deepcopy(sub_step))
+                        step_copy = deepcopy(sub_step)
+                        # Replace {index} if present
+                        for key in ["xpath", "id", "value", "option", "file", "text"]:
+                            if key in step_copy and isinstance(step_copy[key], str):
+                                step_copy[key] = step_copy[key].replace("{index}", str(i))
+                        self.process_step(step_copy)
                 continue
 
-            # -------------------------
             # Index repeat
-            # -------------------------
             if "indexrepeat" in step and "steps" in step:
                 repeat_count = int(self.resolve_variables(step["indexrepeat"]))
                 print(f"\n🔁 Index repeating block {repeat_count} times")
                 for i in range(repeat_count):
                     for sub_step in step["steps"]:
                         step_copy = deepcopy(sub_step)
-                        for key in ["xpath", "id"]:
-                            if key in step_copy and step_copy[key]:
+                        # Replace {index} in all relevant fields
+                        for key in ["xpath", "id", "value", "option", "file", "text"]:
+                            if key in step_copy and isinstance(step_copy[key], str):
                                 step_copy[key] = step_copy[key].replace("{index}", str(i))
                         self.process_step(step_copy)
                 continue
 
-            # -------------------------
             # Normal step
-            # -------------------------
             print(f"\nExecuting step: {step}")
             self.process_step(step)
 
@@ -281,26 +245,19 @@ class PriorityRunner:
 
 
 # -------------------------
-# CLI ENTRY
+# CLI ENTRY WITH ARGPARSE
 # -------------------------
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="ALPPS Bot")
+    parser.add_argument("workflow", help="Workflow JSON file")
+    parser.add_argument("data", help="Data JSON file with variable values")
+    parser.add_argument("--runs", type=int, default=1, help="Number of times to run the workflow")
+    args = parser.parse_args()
 
-    if len(sys.argv) < 2:
-        print("Usage: python runner.py <workflow.json> [data.json] [runs]")
-        sys.exit(1)
-
-    workflow_file = sys.argv[1]
-    data_file = sys.argv[2] if len(sys.argv) > 2 else None
-    runs = int(sys.argv[3]) if len(sys.argv) > 3 else 1
-
-    print(f"Workflow File: {workflow_file}")
-    print(f"Data File: {data_file}")
-    print(f"Number of Runs: {runs}")
-
-    for i in range(runs):
-        print(f"\n========== RUN {i+1} of {runs} ==========")
+    for run in range(args.runs):
+        print(f"\n========== RUN {run+1} of {args.runs} ==========")
         runner = PriorityRunner()
-        runner.execute(workflow_file, data_file)
+        runner.execute(args.workflow, args.data)
         runner.driver.quit()
 
     print("\n✅ All executions completed.")
